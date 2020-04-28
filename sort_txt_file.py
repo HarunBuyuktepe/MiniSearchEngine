@@ -1,7 +1,9 @@
 # Python3 program to demonstrate auto-complete  
 # feature using Trie data structure. 
 # Note: This is a basic implementation of Trie 
-# and not the most optimized one. 
+# and not the most optimized one.
+import re
+
 class TrieNode():
     def __init__(self):
         # Initialising one node for trie
@@ -84,8 +86,7 @@ class Trie():
 
         if not_found:
             return 0
-        elif node.last and not node.children:
-            return -1
+
 
         self.suggestionsRec(node, temp_word)
 
@@ -94,11 +95,49 @@ class Trie():
         return 1
 
 
+def oku():
+    # Open the file in read mode
+    text = open("file1.txt", "r")
+
+    # Create an empty dictionary
+    d = dict()
+
+    # Loop through each line of the file
+    for line in text:
+        # Remove the leading spaces and newline character
+        line = line.strip()
+        line = re.sub("[,.]", "", line)
+
+        # Convert the characters in line to
+        # lowercase to avoid case mismatch
+        line = line.lower()
+
+        # Split the line into words
+        words = line.split(" ")
+
+        # Iterate over each word in line
+        for word in words:
+            # Check if the word is already in dictionary
+            if word in d:
+                # Increment count of word by 1
+                d[word] = d[word] + 1
+            else:
+                # Add the word to dictionary with count 1
+                d[word] = 1
+
+    words=[]
+    # Print the contents of dictionary
+    print(d.keys())
+    for key in list(d.keys()):
+        print(key, ":", d[key])
+        words.append(key)
+    print(words)
+    return words
+
+
 # Driver Code
-keys = ["hello", "dog", "hell", "cat", "a",
-        "hel", "help", "helps", "helping"]  # keys to form the trie structure.
-key = "hell"  # key for autocomplete suggestions.
-status = ["Not found", "Found"]
+keys = oku()
+key = "lorem"  # key for autocomplete suggestions.
 
 # creating trie object 
 t = Trie()
@@ -111,9 +150,7 @@ t.formTrie(keys)
 # our trie structure. 
 comp = t.printAutoSuggestions(key)
 
-if comp == -1:
-    print("No other strings found with this prefix\n")
-elif comp == 0:
+if comp == 0:
     print("No string found with this prefix\n")
 
-    # This code is contributed by amurdia
+
