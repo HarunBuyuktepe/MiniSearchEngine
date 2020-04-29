@@ -127,27 +127,27 @@ def oku():
 
     words=[]
     # Print the contents of dictionary
-    print(d.keys())
+    # print(d.keys())
     for key in list(d.keys()):
-        print(key, ":", d[key])
+        # print(key, ":", d[key])
         words.append(key)
-    print(words)
+    # print(words)
     return words
 
 
 # Driver Code
 keys = oku()
-key = "lorem"  # key for autocomplete suggestions.
+key = "adipiscingf"  # key for autocomplete suggestions.
 
-# creating trie object 
+# creating trie object
 t = Trie()
 
-# creating the trie structure with the  
-# given set of strings. 
+# creating the trie structure with the
+# given set of strings.
 t.formTrie(keys)
 
-# autocompleting the given key using  
-# our trie structure. 
+# autocompleting the given key using
+# our trie structure.
 comp = t.printAutoSuggestions(key)
 
 if comp == 0:
