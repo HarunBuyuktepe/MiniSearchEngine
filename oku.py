@@ -1,16 +1,18 @@
 from pip._vendor.distlib.compat import raw_input
 import os
-import sort_txt_file as trie_lib
+import trie as trie_lib
 import re
 path = ""
-
 file_list = []
-for file in os.listdir("./"):
-    if file.endswith(".txt"):
-        file_list.append(file)
-        # print(os.path.join("./", file))
 
-def get_words(path):
+def getFiles(path):
+    file_list.clear()
+    for file in os.listdir(path):
+        if file.endswith(".txt"):
+            file_list.append(file)
+            # print(os.path.join("./", file))
+
+def getWords(path):
     # Open the file in read mode
     text = open(path, "r")
 
@@ -52,10 +54,10 @@ def get_words(path):
 def starter(path):
     x = raw_input('Enter your choice '
                   '\n1.Search key in file which existed at selected path \n2.Common word(s) in selected files'
+                  '\n3.Change the path '
                   '\n0.Exit\n')
     x = int(x)
     if x == 1:
-        print("path")
         if path == "":
             get_path = raw_input("Enter the path please : ")
             for i in path:
@@ -63,14 +65,14 @@ def starter(path):
                     print("Please do not use quotes")
                     starter(path)
             path = get_path
-
+        getFiles(path)
 
         print("Tries are constructing ...")
         # contruct tries
         tries = []
         for i in range(len(file_list)):
             trie = trie_lib.Trie()
-            keys = get_words(file_list[i])
+            keys = getWords(file_list[i])
             trie.formTrie(keys)
             tries.append(trie)
         print("Tries are constructed ...")
@@ -81,7 +83,7 @@ def starter(path):
         #search in tries
         print()
         for i in range(len(tries)):
-            tries[i].printAutoSuggestions(key,file_list[i])
+            tries[i].miniEngine(key,path+file_list[i])
 
         starter(path)
     elif x == 2:
@@ -93,9 +95,8 @@ def starter(path):
                     print("Please do not use quotes")
                     starter(path)
             path = get_path
-
+        getFiles(path)
         # get selected file
-
         print("Files in your work path is \n", file_list)
         selected_files = []
         while len(selected_files)<2:
@@ -119,7 +120,7 @@ def starter(path):
         tries = []
         for i in range(len(selected_files)):
             trie = trie_lib.Trie()
-            keys = get_words(selected_files[i])
+            keys = getWords(selected_files[i])
             trie.formTrie(keys)
             tries.append(trie)
         print("Tries are constructed ...")
@@ -127,7 +128,7 @@ def starter(path):
         # search in tries
         print()
         common_words = []
-        keys = get_words(selected_files[1])
+        keys = getWords(selected_files[1])
         for key in keys:
             if tries[0].search(key):
                 common_words.append(key)
@@ -139,7 +140,7 @@ def starter(path):
                         while key in common_words:
                             common_words.remove(key)
 
-        print(common_words)
+        print("Common word of selected files \n",common_words)
         starter(path)
 
     elif x == 3:
@@ -160,19 +161,3 @@ def starter(path):
 if __name__ == "__main__":
     starter(path)
 
-
-
-
-
-
-# arg_list = []
-# arg_list=sys.argv
-# # python oku.py -c [path]
-# if len(arg_list)>2:
-#     print(arg_list[1])
-#     if str(arg_list[1] ) == "-c":
-#         print(arg_list[1])
-#     elif arg_list[1] == "-k":
-#         print(arg_list[1])
-# else:
-#     print("You are missing or incorrectly dialed")
