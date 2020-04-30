@@ -83,10 +83,6 @@ def starter(path):
         for i in range(len(tries)):
             tries[i].printAutoSuggestions(key,file_list[i])
 
-
-
-
-
         starter(path)
     elif x == 2:
         print("common")
@@ -100,11 +96,13 @@ def starter(path):
 
         # get selected file
 
-
         print("Files in your work path is \n", file_list)
         selected_files = []
         while len(selected_files)<2:
-            key = raw_input("Enter the file name please : ")
+            key = raw_input("\nWrite name of the files, to compare all just write ALL\nEnter the file name please : ")
+            if key == "ALL":
+                selected_files = file_list
+                break
             selected_files = key.split(" ")
             for i in range(len(selected_files)):
                 if ".txt" not in selected_files[i]:
@@ -117,16 +115,33 @@ def starter(path):
                     print("Please select current files or change your path")
                     print("Files in your work path is \n", file_list)
 
-        #trieleri oluştur oratkları arat
+        # trieleri oluştur ortakları arat
+        tries = []
+        for i in range(len(selected_files)):
+            trie = trie_lib.Trie()
+            keys = get_words(selected_files[i])
+            trie.formTrie(keys)
+            tries.append(trie)
+        print("Tries are constructed ...")
 
+        # search in tries
+        print()
+        common_words = []
+        keys = get_words(selected_files[1])
+        for key in keys:
+            if tries[0].search(key):
+                common_words.append(key)
+        if len(selected_files)>2:
+            for i in range(2,len(selected_files)):
+                for key in common_words:
+                    if not tries[i].search(key):
+                        # print(common_words)
+                        while key in common_words:
+                            common_words.remove(key)
 
-
-
-
-
-
-
+        print(common_words)
         starter(path)
+
     elif x == 3:
         print("path")
         get_path = raw_input("Enter the path please : ")
