@@ -68,7 +68,6 @@ def starter(path):
         print("Tries are constructing ...")
         # contruct tries
         tries = []
-
         for i in range(len(file_list)):
             trie = trie_lib.Trie()
             keys = get_words(file_list[i])
@@ -78,11 +77,11 @@ def starter(path):
 
         # get key
         key = raw_input("Enter the key please : ")
+        key = key.lower()
         #search in tries
         print()
         for i in range(len(tries)):
-            print("Result in ",file_list[i])
-            tries[i].printAutoSuggestions(key)
+            tries[i].printAutoSuggestions(key,file_list[i])
 
 
 

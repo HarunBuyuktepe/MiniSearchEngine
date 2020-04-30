@@ -67,7 +67,7 @@ class Trie():
         for a, n in node.children.items():
             self.suggestionsRec(n, word + a)
 
-    def printAutoSuggestions(self, key):
+    def printAutoSuggestions(self, key, trie_path):
 
         # Returns all the words in the trie whose common 
         # prefix is the given key thus listing out all  
@@ -87,12 +87,25 @@ class Trie():
         if not_found:
             return 0
 
-
+        print("Result in ", trie_path)
         self.suggestionsRec(node, temp_word)
-
+        print("Found words : ", self.word_list)
         for s in self.word_list:
-            print(s)
+
+            self.get_position(word=s,trie_path=trie_path)
+            print()
         return 1
+
+    def get_position(self,word,trie_path):
+        print("Position of the \" ",word,"\" in the File ",trie_path)
+        text = open(trie_path, "r")
+        i = 1
+        for line in text:
+            line = re.sub("[,.]", "", line)
+            line = line.lower()
+            if word in line:
+                print("Index of first character : ",line.index(word) ," Line of the word : ",i)
+            i = i+1
 
 
 def oku():
@@ -133,24 +146,24 @@ def oku():
         words.append(key)
     # print(words)
     return words
-
-
-# Driver Code
-keys = oku()
-key = "adipiscingf"  # key for autocomplete suggestions.
-
-# creating trie object
-t = Trie()
-
-# creating the trie structure with the
-# given set of strings.
-t.formTrie(keys)
-
-# autocompleting the given key using
-# our trie structure.
-comp = t.printAutoSuggestions(key)
-
-if comp == 0:
-    print("No string found with this prefix\n")
+#
+#
+# # Driver Code
+# keys = oku()
+# key = "adipiscingf"  # key for autocomplete suggestions.
+#
+# # creating trie object
+# t = Trie()
+#
+# # creating the trie structure with the
+# # given set of strings.
+# t.formTrie(keys)
+#
+# # autocompleting the given key using
+# # our trie structure.
+# comp = t.printAutoSuggestions(key,trie_path)
+#
+# if comp == 0:
+#     print("No string found with this prefix\n")
 
 
